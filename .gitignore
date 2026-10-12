@@ -56,3 +56,5 @@ data/external/
 *.db
 *.sqlite
 *.sqlite3
+
+data/raw/
