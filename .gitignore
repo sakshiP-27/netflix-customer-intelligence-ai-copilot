@@ -58,3 +58,6 @@ data/external/
 *.sqlite3
 
 data/raw/
+
+# Copilot query audit log
+logs/

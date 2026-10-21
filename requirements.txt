@@ -8,3 +8,8 @@ scikit-learn
 xgboost
 joblib
 seaborn
+google-genai
+anthropic
+openai
+sqlglot
+chromadb
