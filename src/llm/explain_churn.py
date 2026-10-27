@@ -327,6 +327,10 @@ def build_facts(customer_id: Any) -> dict[str, Any]:
             {"label": item["label"], "value": item["value"], "typical": item["typical"]}
             for item in risk
         ],
+        "protective_factors": [
+            {"label": item["label"], "value": item["value"], "typical": item["typical"]}
+            for item in protective
+        ],
         "answer": "",
         "status": "ok",
     }
