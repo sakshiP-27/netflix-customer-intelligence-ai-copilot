@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -27,21 +28,43 @@ def _require_config() -> None:
         raise RuntimeError("Set LLM_API_KEY in .env. Do not put the key in code.")
 
 
+def _rate_limited(exc: Exception) -> bool:
+    code = getattr(exc, "code", None) or getattr(exc, "status_code", None)
+    if code in {429, 500, 503}:
+        return True
+    text = str(exc).lower()
+    return any(
+        needle in text
+        for needle in ("429", "resource_exhausted", "rate limit", "unavailable", "503")
+    )
+
+
 def _text_from_gemini(system_prompt: str, user_prompt: str, max_tokens: int) -> str:
     from google import genai
     from google.genai import types
 
     client = genai.Client(api_key=API_KEY)
-    response = client.models.generate_content(
-        model=MODEL,
-        contents=user_prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=system_prompt,
-            temperature=0,
-            max_output_tokens=max_tokens,
-        ),
+    config = types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        temperature=0,
+        max_output_tokens=max_tokens,
+        thinking_config=types.ThinkingConfig(thinking_budget=0),
     )
-    return (response.text or "").strip()
+    last_error: Exception | None = None
+    for attempt in range(4):
+        try:
+            response = client.models.generate_content(
+                model=MODEL,
+                contents=user_prompt,
+                config=config,
+            )
+            return (response.text or "").strip()
+        except Exception as exc:
+            last_error = exc
+            if attempt == 3 or not _rate_limited(exc):
+                raise
+            time.sleep(20 * (attempt + 1))
+    raise last_error or RuntimeError("Gemini request failed")
 
 
 def _text_from_anthropic(system_prompt: str, user_prompt: str, max_tokens: int) -> str:

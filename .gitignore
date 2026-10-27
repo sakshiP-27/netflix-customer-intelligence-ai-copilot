@@ -61,3 +61,6 @@ data/raw/
 
 # Copilot query audit log
 logs/
+
+# Local embedding index for support search
+data/vector_store/
