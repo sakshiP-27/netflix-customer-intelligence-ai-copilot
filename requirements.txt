@@ -13,3 +13,6 @@ anthropic
 openai
 sqlglot
 chromadb
+streamlit
+plotly
+pytest
