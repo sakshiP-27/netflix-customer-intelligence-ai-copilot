@@ -6,6 +6,10 @@ import pandas as pd
 import plotly.express as px
 
 
+_RED = "#E50914"
+_SERIES = ["#E50914", "#F5C518", "#2EC4B6", "#B388FF"]
+
+
 def _layout(fig, title: str, x_label: str, y_label: str, height: int) -> None:
     fig.update_layout(
         title=title,
@@ -13,11 +17,19 @@ def _layout(fig, title: str, x_label: str, y_label: str, height: int) -> None:
         yaxis_title=y_label,
         height=height,
         margin=dict(l=16, r=16, t=56, b=16),
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#F5F5F5"),
+        title_font=dict(color="#FFFFFF", size=18),
+        legend=dict(bgcolor="rgba(0,0,0,0)"),
     )
+    fig.update_xaxes(gridcolor="#2a2a2a", zerolinecolor="#2a2a2a")
+    fig.update_yaxes(gridcolor="#2a2a2a", zerolinecolor="#2a2a2a")
 
 
 def line_chart(frame: pd.DataFrame, x: str, y: str, title: str, x_label: str, y_label: str, markers: bool = False):
-    fig = px.line(frame, x=x, y=y, markers=markers, color_discrete_sequence=["#4C78A8"])
+    fig = px.line(frame, x=x, y=y, markers=markers, color_discrete_sequence=[_RED])
     fig.update_xaxes(type="category", categoryorder="array", categoryarray=frame[x].tolist())
     _layout(fig, title, x_label, y_label, 380)
     return fig
@@ -34,13 +46,13 @@ def bar_chart(
     category_order: list[str] | None = None,
 ):
     if horizontal:
-        fig = px.bar(frame, x=y, y=x, orientation="h", color_discrete_sequence=["#4C78A8"])
+        fig = px.bar(frame, x=y, y=x, orientation="h", color_discrete_sequence=[_RED])
         height = max(320, 28 * len(frame) + 80)
         _layout(fig, title, y_label, x_label, height)
         if category_order:
             fig.update_yaxes(categoryorder="array", categoryarray=category_order)
     else:
-        fig = px.bar(frame, x=x, y=y, color_discrete_sequence=["#4C78A8"])
+        fig = px.bar(frame, x=x, y=y, color_discrete_sequence=[_RED])
         _layout(fig, title, x_label, y_label, 380)
         if category_order:
             fig.update_xaxes(type="category", categoryorder="array", categoryarray=category_order)
@@ -103,14 +115,8 @@ def chart_for_rows(rows: list[dict] | None):
 
 
 def scatter_chart(frame: pd.DataFrame, x: str, y: str, color: str, title: str, x_label: str, y_label: str):
-    fig = px.scatter(frame, x=x, y=y, color=color, opacity=0.65, color_discrete_sequence=["#4C78A8", "#F58518", "#54A24B", "#E45756"])
-    fig.update_layout(
-        title=title,
-        xaxis_title=x_label,
-        yaxis_title=y_label,
-        legend_title="Segment",
-        height=520,
-        margin=dict(l=16, r=16, t=56, b=16),
-    )
+    fig = px.scatter(frame, x=x, y=y, color=color, opacity=0.75, color_discrete_sequence=_SERIES)
+    _layout(fig, title, x_label, y_label, 520)
+    fig.update_layout(legend_title="Segment")
     fig.update_traces(marker=dict(size=7))
     return fig
