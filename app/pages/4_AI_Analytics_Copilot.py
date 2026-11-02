@@ -3,14 +3,16 @@ import streamlit as st
 
 from components.charts import chart_for_rows
 from components.helpers import prepare_app
+from components.theme import apply_theme, page_heading
 from src.llm.copilot import ask_database
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
-st.title("AI Analytics Copilot")
-st.caption(
+page_heading(
+    "AI Analytics Copilot",
     "For anyone asking a question of the database. A question becomes SQL, a table, and a chart when the result fits. "
-    "Nothing is sent to the model until you submit it."
+    "Nothing is sent to the model until you submit it.",
 )
 
 EXAMPLES = [

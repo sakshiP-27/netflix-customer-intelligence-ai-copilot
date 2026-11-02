@@ -3,6 +3,7 @@ import streamlit as st
 
 from components.charts import bar_chart, line_chart
 from components.helpers import prepare_app
+from components.theme import apply_theme, page_heading
 from components.page_data import (
     rating_by_month,
     rating_by_sentiment,
@@ -16,12 +17,13 @@ from components.page_data import (
 from src.llm.copilot import ask_support
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
 
-st.title("Support Intelligence")
-st.caption(
+page_heading(
+    "Support Intelligence",
     "For a support lead. Search tickets and feedback, see complaint trends, "
-    "and summarize the records that were found."
+    "and summarize the records that were found.",
 )
 
 
