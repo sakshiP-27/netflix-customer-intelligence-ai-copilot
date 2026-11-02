@@ -34,10 +34,15 @@ def copilot_url() -> str:
     if not password:
         raise RuntimeError("Set COPILOT_RO_PASSWORD or COPILOT_DB_URL in .env")
     parsed = urlparse(admin_url())
+    user = COPILOT_USER
+    admin_user = parsed.username or ""
+    if "." in admin_user:
+        user = f"{COPILOT_USER}.{admin_user.split('.', 1)[1]}"
+    query = f"?{parsed.query}" if parsed.query else ""
     host = parsed.hostname or "localhost"
     port = parsed.port or 5432
     db = (parsed.path or "/netflix_intelligence").lstrip("/")
-    return f"postgresql://{COPILOT_USER}:{quote_plus(password)}@{host}:{port}/{db}"
+    return f"postgresql://{user}:{quote_plus(password)}@{host}:{port}/{db}{query}"
 
 
 def make_engine(url: str) -> Engine:
