@@ -3,16 +3,18 @@ from pathlib import Path
 import streamlit as st
 
 from components.helpers import PROJECT_ROOT, prepare_app
+from components.theme import apply_theme, page_heading
 from src.llm.reports import PERIODS, generate_report, report_window
 from src.llm.root_cause import investigate_churn
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
 
-st.title("Automated Reports")
-st.caption(
+page_heading(
+    "Automated Reports",
     "For an executive or a finance analyst. Weekly, monthly, and quarterly reports, "
-    "plus a check on why churn changed in one region."
+    "plus a check on why churn changed in one region.",
 )
 
 PART_B = "## Part B:"

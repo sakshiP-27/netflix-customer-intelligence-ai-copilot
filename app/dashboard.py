@@ -3,12 +3,17 @@ import streamlit as st
 from components.charts import line_chart
 from components.helpers import prepare_app
 from components.page_data import dashboard_kpis, monthly_churn, monthly_revenue
+from components.theme import apply_theme, metric_tiles, page_heading, poster_row
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
 
-st.title("Executive Dashboard")
-st.caption("For an executive. Snapshot of customers, revenue, churn, and satisfaction. The caption under each tile is the definition used to calculate it.")
+page_heading(
+    "Executive Dashboard",
+    "For an executive. Snapshot of customers, revenue, churn, and satisfaction. The caption under each tile is the definition used to calculate it.",
+)
+poster_row()
 
 try:
     kpis = dashboard_kpis()
@@ -34,11 +39,7 @@ tiles = [
     ),
 ]
 
-for start in (0, 3):
-    columns = st.columns(3)
-    for column, (label, value, note) in zip(columns, tiles[start : start + 3]):
-        column.metric(label, value)
-        column.caption(note)
+metric_tiles(tiles)
 
 revenue = monthly_revenue()
 if revenue.empty:

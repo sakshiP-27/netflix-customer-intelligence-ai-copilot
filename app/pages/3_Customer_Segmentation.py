@@ -3,14 +3,16 @@ import streamlit as st
 
 from components.charts import bar_chart, scatter_chart
 from components.helpers import prepare_app
+from components.theme import apply_theme, page_heading
 from components.page_data import scored_customers, segment_profile, segment_projection
 from src.models.config import CLUSTER_NAMES
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
-st.title("Customer Segmentation")
-st.caption(
-    "For a retention manager. Four customer groups, how they differ, and a suggested action for each."
+page_heading(
+    "Customer Segmentation",
+    "For a retention manager. Four customer groups, how they differ, and a suggested action for each.",
 )
 
 SEGMENT_NOTES = {

@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 
 from components.helpers import prepare_app
+from components.theme import apply_theme, page_heading
 from components.page_data import top_risk_customers
 from src.llm.explain_churn import (
     HIGH_RISK_MIN,
@@ -15,12 +16,13 @@ from src.llm.retention import decide_action, recommend_action
 from src.models.config import CHURN_THRESHOLD
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
-st.title("Churn Prediction")
-st.caption(
+page_heading(
+    "Churn Prediction",
     "For a retention manager. One customer's churn score, the factors behind it, and a retention action. "
     "The score and the risk factors are calculated in code. "
-    "The explanation and the retention note are written only after you press a button."
+    "The explanation and the retention note are written only after you press a button.",
 )
 
 
