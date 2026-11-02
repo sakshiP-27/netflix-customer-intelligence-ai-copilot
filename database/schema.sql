@@ -121,3 +121,13 @@ CREATE INDEX idx_payments_customer_id ON payments (customer_id);
 CREATE INDEX idx_payments_subscription_id ON payments (subscription_id);
 CREATE INDEX idx_support_tickets_customer_id ON support_tickets (customer_id);
 CREATE INDEX idx_customer_feedback_customer_id ON customer_feedback (customer_id);
+
+ALTER TABLE customers DISABLE ROW LEVEL SECURITY;
+ALTER TABLE subscription_plans DISABLE ROW LEVEL SECURITY;
+ALTER TABLE content DISABLE ROW LEVEL SECURITY;
+ALTER TABLE subscriptions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE viewing_activity DISABLE ROW LEVEL SECURITY;
+ALTER TABLE payments DISABLE ROW LEVEL SECURITY;
+ALTER TABLE support_tickets DISABLE ROW LEVEL SECURITY;
+ALTER TABLE customer_feedback DISABLE ROW LEVEL SECURITY;
+ALTER TABLE churn_labels DISABLE ROW LEVEL SECURITY;
