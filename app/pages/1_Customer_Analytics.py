@@ -2,6 +2,7 @@ import streamlit as st
 
 from components.charts import bar_chart
 from components.helpers import prepare_app
+from components.theme import apply_theme, page_heading
 from components.page_data import (
     AGE_BANDS,
     TENURE_BANDS,
@@ -12,11 +13,12 @@ from components.page_data import (
 )
 
 st.set_page_config(page_title="Customer Intelligence", layout="wide")
+apply_theme()
 prepare_app()
-st.title("Customer Analytics")
-st.caption(
+page_heading(
+    "Customer Analytics",
     "For an executive or a retention manager. Who the customers are, how they watch, and how they subscribe. "
-    "Country, plan, and tenure filter every chart on this page."
+    "Country, plan, and tenure filter every chart on this page.",
 )
 st.page_link("pages/3_Customer_Segmentation.py", label="Open Customer Segmentation")
 
